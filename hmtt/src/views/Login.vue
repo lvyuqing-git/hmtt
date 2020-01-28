@@ -8,8 +8,7 @@
                  :value='user.username'
                  @input='inputUser'
                  msg='账号输入错误'
-                 :rule='/^\d{6}$/'
-                 ></hminout>
+                 :rule='/^\d{6}$/'></hminout>
         <hminout placeholder="请输入密码"
                  v-model='user.password'
                  msg='密码输入错误'
@@ -30,7 +29,7 @@
 <script>
 import hmbutton from '../components/hmbutton'
 import hminout from '../components/hminput'
-import {login} from '../apis/apiUser'
+import { login } from '../apis/apiUser'
 export default {
   components: {
     hmbutton,
@@ -45,10 +44,15 @@ export default {
     }
   },
   methods: {
-   async btnClick() {
+    async btnClick() {
       let res = await login(this.user)
-      console.log(res)
-
+      console.log(res);
+      
+      if (res.data.message == '登录成功') {
+        this.$router.push({ name: 'Personal' })
+      } else {
+        this.$toast.fail(res.data.message)
+      }
     },
     inputUser(data) {
       this.user.username = data
