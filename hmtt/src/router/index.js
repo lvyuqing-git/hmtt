@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import Login from '../views/Login.vue'
 import Personal from '../views/Personal.vue'
+import Edit_profile from '../views/Edit_profile'
 Vue.use(VueRouter)
 
 let router = new VueRouter({
@@ -16,7 +17,13 @@ let router = new VueRouter({
 			name: 'Personal',
 			path: '/personal',
 			component: Personal
-		}
+        },
+        {
+            name : 'Edit_profile',
+            path : '/edit_profile',
+            component : Edit_profile
+        }
+        
 	]
 })
 router.beforeEach((to, from, next) => {
