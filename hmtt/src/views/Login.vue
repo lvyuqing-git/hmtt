@@ -47,7 +47,8 @@ export default {
     async btnClick() {
       let res = await login(this.user)
       console.log(res);
-      
+      localStorage.setItem('token',res.data.data.token)
+      localStorage.setItem('user',res.data.data.user)
       if (res.data.message == '登录成功') {
         this.$router.push({ name: 'Personal' })
       } else {
