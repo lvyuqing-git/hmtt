@@ -2,13 +2,20 @@
   <div id="app">
     <hmheader title="编辑资料"></hmheader>
     <div class="photo">
-      <img :src="user.head_img"
-           class="tx">
+      <van-uploader :after-read="afterRead"
+                    id="upload" />
+      <label for="upload">
+        <img :src="user.head_img"
+             class="tx">
+      </label>
     </div>
     <div>
-        <hmcell title="昵称" :desc='user.nickname'></hmcell>
-        <hmcell title="密码" desc='******'></hmcell>
-        <hmcell title="性别" :desc="user.gender?'男':'女'"></hmcell>
+      <hmcell title="昵称"
+              :desc='user.nickname'></hmcell>
+      <hmcell title="密码"
+              desc='******'></hmcell>
+      <hmcell title="性别"
+              :desc="user.gender?'男':'女'"></hmcell>
     </div>
   </div>
 
@@ -17,6 +24,7 @@
 <script>
 import hmheader from '../components/hmheader'
 import hmcell from '../components/hmcell'
+import { uploadFile } from '../apis/apiupload'
 export default {
   data() {
     return {
@@ -24,11 +32,20 @@ export default {
     }
   },
   components: {
-    hmheader,hmcell
+    hmheader,
+    hmcell
   },
   mounted() {
     this.user = JSON.parse(localStorage.getItem('user'))
-    console.log(this.user)
+  },
+  methods: {
+    async afterRead(file) {
+      // 此时可以自行将文件上传至服务器
+      let upload = new FormData()
+      upload.append('file', file.file)
+      let res = await uploadFile(upload)
+      console.log(res)
+    }
   }
 }
 </script>
@@ -38,11 +55,11 @@ export default {
   position: relative;
   margin-top: 30px;
   height: 150px;
-  > .tx {
-   position: absolute;
-   left: 50%;
-   transform: translate(-50%);
-   border-radius: 50%;
+  .tx {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    border-radius: 50%;
   }
 }
 </style>
