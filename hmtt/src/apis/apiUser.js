@@ -7,3 +7,13 @@ export const login = data => {
 		data
 	})
 }
+export const alterHead_img = (id,data)=>{
+    console.log(id)
+    console.log(data)
+    
+    return axios({
+        url : `/user_update/${id}`,
+        method : 'post',
+        data
+    })
+}

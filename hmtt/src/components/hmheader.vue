@@ -1,7 +1,7 @@
 <template>
   <div class="header">
       <div class="left">
-          <van-icon name="arrow-left" />
+          <van-icon name="arrow-left" @click="$router.back()"/>
       </div>
       <div class="center">{{title}}</div>
   </div>
