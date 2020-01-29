@@ -46,10 +46,6 @@ export default {
   },
   mounted() {
     this.user = JSON.parse(localStorage.getItem('user'))
-    if (this.user.head_img.indexOf('http') == -1) {
-      this.user.head_img = 'http://127.0.0.1:3000' + this.user.head_img
-    }
-    console.log(this.user)
   }
 }
 </script>

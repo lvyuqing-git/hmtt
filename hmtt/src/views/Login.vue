@@ -46,8 +46,10 @@ export default {
   methods: {
     async btnClick() {
       let res = await login(this.user)
-      console.log(res);
       localStorage.setItem('token',res.data.data.token)
+      if(res.data.data.user.head_img.indexOf('http') == -1){
+          res.data.data.user.head_img = 'http://127.0.0.1:3000' +  res.data.data.user.head_img
+      }
       localStorage.setItem('user',JSON.stringify(res.data.data.user))
       if (res.data.message == '登录成功') {
         this.$router.push({ name: 'Personal' })
