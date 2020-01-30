@@ -37,8 +37,19 @@
         <van-field placeholder="请输入新密码"
                    ref="newPassword" />
       </van-dialog>
+
       <hmcell title="性别"
-              :desc="user.gender?'男':'女'"></hmcell>
+              :desc="user.gender?'男':'女'"
+              @click="userAlter.genderAlter = true"></hmcell>
+
+      <van-dialog v-model="userAlter.genderAlter"
+                  title="修改密码"
+                  show-cancel-button
+                  @confirm='genderAlter'>
+        <van-picker :columns="['女','男']"
+                    @change='onChange'
+                    :defaultIndex='user.gender' />
+      </van-dialog>
     </div>
   </div>
 
@@ -61,7 +72,7 @@ export default {
       userInfo: {
         nickname: ''
       },
-      id: ''
+      gender: ''
     }
   },
   components: {
@@ -99,31 +110,48 @@ export default {
     async passwordAlter() {
       let oldPassword = this.$refs.oldPassword.$refs.input.value
       let newPassword = this.$refs.newPassword.$refs.input.value
-      if (this.user.password == oldPassword) {
+      if (oldPassword.length == 0 || newPassword.length == 0) {
+        this.$toast.fail('参数不能为空')
+      } else if (this.user.password != oldPassword) {
+        this.$toast.fail('原密码错误')
+      } else if (!/^\d{3}$/.test(newPassword)) {
+        this.$toast.fail('新密码格式不正确')
+      } else if (
+        this.user.password == oldPassword &&
+        /^\d{3}$/.test(newPassword)
+      ) {
         let res = await alterInfo(this.user.id, { password: newPassword })
         if (res.data.message == '修改成功') {
-          this.$toast.success('修改成功')
+          this.$toast.success(res.data.message)
         }
-      } else if (oldPassword.length == 0) {
-        this.$toast.fail('请输入原密码')
-      } else {
-        this.$toast.fail('原密码错误')
       }
     },
     passwordError(action, done) {
       let oldPassword = this.$refs.oldPassword.$refs.input.value
-      //   let newPassword = this.$refs.newPassword.$refs.input.value
+      let newPassword = this.$refs.newPassword.$refs.input.value
       if (action == 'cancel') {
         done()
         return
+      } else {
+        if (oldPassword.length == 0 || newPassword.length == 0) {
+          done(false)
+        } else if (oldPassword != this.user.password) {
+          done(false)
+        } else if (!/^\d{3}$/.test(newPassword)) {
+          done(false)
+        }else{
+            done()
+        }
       }
-      if (oldPassword.length == 0) {
-        done(false)
-      } else if (oldPassword != this.user.password) {
-        done(false)
-      }else{
-        done()
-      }
+    },
+    async genderAlter() {
+      let res = await alterInfo(this.user.id, { gender: this.gender })
+      this.user.gender = res.data.data.gender
+    },
+    onChange(picker, value, index) {
+      console.log(picker)
+      console.log(value)
+      this.gender = index
     }
   }
 }

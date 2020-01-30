@@ -46,15 +46,20 @@ export default {
   methods: {
     async btnClick() {
       let res = await login(this.user)
-      localStorage.setItem('token',res.data.data.token)
-      if(res.data.data.user.head_img.indexOf('http') == -1){
-          res.data.data.user.head_img = 'http://127.0.0.1:3000' +  res.data.data.user.head_img
-      }
-      localStorage.setItem('user',JSON.stringify(res.data.data.user))
-      if (res.data.message == '登录成功') {
-        this.$router.push({ name: 'Personal' })
+      if (res.data.message != '登录成功') {
+          this.$toast.fail('用户名或密码错误')
       } else {
-        this.$toast.fail(res.data.message)
+        localStorage.setItem('token', res.data.data.token)
+        if (res.data.data.user.head_img.indexOf('http') == -1) {
+          res.data.data.user.head_img =
+            'http://127.0.0.1:3000' + res.data.data.user.head_img
+        }
+        localStorage.setItem('user', JSON.stringify(res.data.data.user))
+        if (res.data.message == '登录成功') {
+          this.$router.push({ name: 'Personal' })
+        } else {
+          this.$toast.fail(res.data.message)
+        }
       }
     },
     inputUser(data) {

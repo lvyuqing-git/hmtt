@@ -9,8 +9,8 @@ export const login = data => {
 }
 //修改用户信息
 export const alterInfo = (id,data)=>{
-    console.log(id);
-    console.log(data);
+    // console.log(id);
+    // console.log(data);
     
     return axios({
         url : `/user_update/${id}`,
