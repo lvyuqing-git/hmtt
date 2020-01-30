@@ -15,7 +15,11 @@
       <van-tabs v-model="active">
         <van-tab :title="item.name"
                  v-for="item in columnList"
-                 :key="item.id">内容 1</van-tab>
+                 :key="item.id">
+          <hmarticle v-for="(item,index) in columnList[active].postList"
+                     :key="index"
+                     :post='item'></hmarticle>
+        </van-tab>
       </van-tabs>
     </div>
   </div>
@@ -23,13 +27,17 @@
 </template>
 
 <script>
-import { getColumnList,getArticleList } from '../apis/article'
+import { getColumnList, getArticleList } from '../apis/article'
+import hmarticle from '../components/hmarticle'
 export default {
   data() {
     return {
-      active: 0,
+      active: localStorage.getItem('token') ? 1 : 0,
       columnList: []
     }
+  },
+  components: {
+    hmarticle
   },
   async mounted() {
     let res = await getColumnList()
@@ -37,19 +45,35 @@ export default {
       return {
         ...value,
         pageIndex: 1,
-        pageSize: 2,
+        pageSize: 5,
         postList: []
       }
     })
 
     let res2 = await getArticleList({
-        pageIndex : this.columnList[this.active].pageIndex,
-        pageSize : this.columnList[this.active].pageSize,
-        category : this.columnList[this.active].id,
+      pageIndex: this.columnList[this.active].pageIndex,
+      pageSize: this.columnList[this.active].pageSize,
+      category: this.columnList[this.active].id
     })
-    console.log(res2);
-    
-  
+    this.columnList[this.active].postList = res2.data.data
+    for (let i = 0; i < this.columnList[this.active].postList.length; i++) {
+      for (
+        let j = 0;
+        j < this.columnList[this.active].postList[i].cover.length;
+        j++
+      ) {
+        console.log(this.columnList[this.active].postList[i].cover[j])
+        if (
+          this.columnList[this.active].postList[i].cover[j].url.indexOf(
+            'http'
+          ) == -1
+        ) {
+          this.columnList[this.active].postList[i].cover[j].url =
+            'http://127.0.0.1:3000' +
+            this.columnList[this.active].postList[i].cover[j].url
+        }
+      }
+    }
   }
 }
 </script>

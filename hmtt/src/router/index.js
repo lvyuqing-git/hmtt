@@ -9,15 +9,15 @@ Vue.use(VueRouter)
 
 let router = new VueRouter({
 	routes: [
-        {
+		{
 			name: 'default',
 			path: '/',
-            component: Index,
+			component: Index
 		},
-        {
+		{
 			name: 'Index',
 			path: '/index',
-            component: Index,
+			component: Index
 		},
 		{
 			name: 'Login',
@@ -28,25 +28,24 @@ let router = new VueRouter({
 			name: 'Personal',
 			path: '/personal',
 			component: Personal
-        },
-        {
-            name : 'Edit_profile',
-            path : '/edit_profile/:id',
-            component : Edit_profile
-        }
-        
+		},
+		{
+			name: 'Edit_profile',
+			path: '/edit_profile/:id',
+			component: Edit_profile
+		}
 	]
 })
 router.beforeEach((to, from, next) => {
-	if (to.path == '/login') {
-		next()
-	} else {
-		let token = localStorage.getItem('token')
-		if (token) {
+	
+	if (to.path == '/personal') {
+		if (localStorage.getItem('token')) {
 			next()
-		} else {
-			next('/login')
-		}
-	}
+		}else{
+            next('/login')
+        }
+	}else{
+        next()
+    }
 })
 export default router
