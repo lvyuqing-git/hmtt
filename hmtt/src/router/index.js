@@ -4,10 +4,21 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Personal from '../views/Personal.vue'
 import Edit_profile from '../views/Edit_profile'
+import Index from '../views/Index'
 Vue.use(VueRouter)
 
 let router = new VueRouter({
 	routes: [
+        {
+			name: 'default',
+			path: '/',
+            component: Index,
+		},
+        {
+			name: 'Index',
+			path: '/index',
+            component: Index,
+		},
 		{
 			name: 'Login',
 			path: '/login',
