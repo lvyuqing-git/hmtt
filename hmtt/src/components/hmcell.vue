@@ -1,5 +1,5 @@
 <template>
-  <div class="cell">
+  <div class="cell" @click="clickCell">
       <div class="left">{{title}}</div>
       <div class="right">{{desc}}<van-icon name="arrow" /></div>
       </div>
@@ -7,7 +7,12 @@
 
 <script>
 export default {
-    props: ['title','desc']
+    props: ['title','desc'],
+    methods: {
+        clickCell(event){
+            this.$emit('click',event)
+        }
+    }
 }
 </script>
 

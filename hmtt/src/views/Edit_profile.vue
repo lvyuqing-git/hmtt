@@ -11,7 +11,15 @@
     </div>
     <div>
       <hmcell title="昵称"
-              :desc='user.nickname'></hmcell>
+              :desc='user.nickname' @click="userAlter.nicknameAlter=true"></hmcell>
+
+      <van-dialog v-model="userAlter.nicknameAlter" 
+                  title="修改昵称"
+                  show-cancel-button
+                  @confirm='nicknameAlter'>
+        <van-field  placeholder="请输入昵称" :value='user.nickname' ref="nick"/>
+      </van-dialog>
+
       <hmcell title="密码"
               desc='******'></hmcell>
       <hmcell title="性别"
@@ -25,21 +33,29 @@
 import hmheader from '../components/hmheader'
 import hmcell from '../components/hmcell'
 import { uploadFile } from '../apis/apiupload'
-import {alterHead_img} from '../apis/apiUser'
+import { alterInfo ,userInfo} from '../apis/apiUser'
 export default {
   data() {
     return {
-      user: {}
+      user: {},
+      userAlter: {
+        nicknameAlter: false,
+        passwordAlter: false,
+        genderAlter: false
+      },
+      userInfo : {
+          nickname : ''
+      },
+      id :''
     }
   },
   components: {
     hmheader,
     hmcell
   },
-  mounted() {
-    this.user = JSON.parse(localStorage.getItem('user'))
-    // console.log(this.user);
-    
+  async mounted() {
+    let res = await userInfo(this.$route.params.id)
+    this.user = res.data.data
   },
   methods: {
     async afterRead(file) {
@@ -47,19 +63,21 @@ export default {
       let upload = new FormData()
       upload.append('file', file.file)
       let res = await uploadFile(upload)
-      if(res.data.message == "文件上传成功"){
-          let id = this.user.id
-           if(res.data.data.url.indexOf('http') == -1){
-                  res.data.data.url = 'http://127.0.0.1:3000' + res.data.data.url
-              }
-          let res2 = await alterHead_img(id,{head_img:res.data.data.url})
-          
-          if(res2.data.message == "修改成功"){
-              localStorage.setItem('user',JSON.stringify(res2.data.data))
-              this.user.head_img = res2.data.data.head_img
-          }
-          
+      if (res.data.message == '文件上传成功') {
+        if (res.data.data.url.indexOf('http') == -1) {
+          res.data.data.url = 'http://127.0.0.1:3000' + res.data.data.url
+        }
+        let res2 = await alterInfo(this.user.id, { head_img: res.data.data.url })
+        if (res2.data.message == '修改成功') {
+          this.user.head_img = res2.data.data.head_img
+        }
       }
+    },
+    async nicknameAlter(){
+        let value = this.$refs.nick.$refs.input.value
+        let res = await alterInfo(this.user.id,{nickname : value})
+        this.user.nickname = res.data.data.nickname
+        
     }
   }
 }
@@ -77,10 +95,9 @@ export default {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    
   }
 }
-.van-uploader{
-    opacity: 0;
+.van-uploader {
+  opacity: 0;
 }
 </style>

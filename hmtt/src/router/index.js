@@ -20,7 +20,7 @@ let router = new VueRouter({
         },
         {
             name : 'Edit_profile',
-            path : '/edit_profile',
+            path : '/edit_profile/:id',
             component : Edit_profile
         }
         
