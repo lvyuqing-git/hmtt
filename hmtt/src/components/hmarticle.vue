@@ -1,5 +1,6 @@
 <template>
-  <div class="article"
+ <div @click="onClick">
+      <div class="article"
        v-if="post.type==1 && post.cover.length == 1">
     <div class="danArticle">
       <div class="conten">{{post.title}}
@@ -49,11 +50,17 @@
       </div>
     </div>
   </div>
+ </div>
 </template>
 
 <script>
 export default {
-  props: ['post']
+  props: ['post'],
+  methods: {
+      onClick(event){
+          this.$emit('click',event)
+      }
+  }
 }
 </script>
 

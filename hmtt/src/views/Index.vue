@@ -27,7 +27,8 @@
                       @load="onLoad">
               <hmarticle v-for="(item,index) in columnList[active].postList"
                          :key="index"
-                         :post='item'></hmarticle>
+                         :post='item'
+                         @click="$router.push({path : `newsDetails/${item.id}`})"></hmarticle>
             </van-list>
           </van-pull-refresh>
 
@@ -114,7 +115,8 @@ export default {
     onRefresh() {
       this.init()
       this.columnList[this.active].isLoading = false
-    }
+    },
+    
   }
 }
 </script>
