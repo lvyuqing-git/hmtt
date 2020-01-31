@@ -12,13 +12,22 @@
       </div>
     </div>
     <div>
-      <van-tabs v-model="active">
+      <van-tabs v-model="active"
+                @click="onClick"
+                swipeable>
         <van-tab :title="item.name"
                  v-for="item in columnList"
                  :key="item.id">
-          <hmarticle v-for="(item,index) in columnList[active].postList"
-                     :key="index"
-                     :post='item'></hmarticle>
+
+          <van-list v-model="loading"
+                    :finished="finished"
+                    finished-text="没有更多了"
+                    @load="onLoad">
+            <hmarticle v-for="(item,index) in columnList[active].postList"
+                       :key="index"
+                       :post='item'></hmarticle>
+          </van-list>
+
         </van-tab>
       </van-tabs>
     </div>
@@ -33,7 +42,9 @@ export default {
   data() {
     return {
       active: localStorage.getItem('token') ? 1 : 0,
-      columnList: []
+      columnList: [],
+      loading: false,
+      finished: false
     }
   },
   components: {
@@ -45,33 +56,54 @@ export default {
       return {
         ...value,
         pageIndex: 1,
-        pageSize: 10,
+        pageSize: 5,
         postList: []
       }
     })
+    this.init()
+  },
+  methods: {
+    onClick() {
+      this.init()
+    },
+    async init() {
+      let res2 = await getArticleList({
+        pageIndex: this.columnList[this.active].pageIndex,
+        pageSize: this.columnList[this.active].pageSize,
+        category: this.columnList[this.active].id
+      })
+      if(this.columnList[this.active].postList.length >= res2.data.total){
+          this.finished = true
+      }
 
-    let res2 = await getArticleList({
-      pageIndex: this.columnList[this.active].pageIndex,
-      pageSize: this.columnList[this.active].pageSize,
-      category: this.columnList[this.active].id
-    })
-    this.columnList[this.active].postList = res2.data.data
-    for (let i = 0; i < this.columnList[this.active].postList.length; i++) {
-      for (
-        let j = 0;
-        j < this.columnList[this.active].postList[i].cover.length;
-        j++
-      ) {
-        if (
-          this.columnList[this.active].postList[i].cover[j].url.indexOf(
-            'http'
-          ) == -1
+      this.columnList[this.active].postList = this.columnList[
+        this.active
+      ].postList.concat(res2.data.data)
+      for (let i = 0; i < this.columnList[this.active].postList.length; i++) {
+        for (
+          let j = 0;
+          j < this.columnList[this.active].postList[i].cover.length;
+          j++
         ) {
-          this.columnList[this.active].postList[i].cover[j].url =
-            'http://127.0.0.1:3000' +
-            this.columnList[this.active].postList[i].cover[j].url
+          if (
+            this.columnList[this.active].postList[i].cover[j].url.indexOf(
+              'http'
+            ) == -1
+          ) {
+            this.columnList[this.active].postList[i].cover[j].url =
+              'http://127.0.0.1:3000' +
+              this.columnList[this.active].postList[i].cover[j].url
+          }
         }
       }
+    },
+
+    onLoad() {
+      // 异步更新数据
+      // setTimeout 仅做示例，真实场景中一般为 ajax 请求
+      this.columnList[this.active].pageIndex += 1
+      this.init()
+      this.loading = false
     }
   }
 }

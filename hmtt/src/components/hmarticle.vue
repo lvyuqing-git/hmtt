@@ -54,9 +54,6 @@
 <script>
 export default {
   props: ['post'],
-  mounted() {
-    console.log(this.post)
-  }
 }
 </script>
 
