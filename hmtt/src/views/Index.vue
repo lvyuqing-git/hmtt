@@ -45,7 +45,7 @@ export default {
       return {
         ...value,
         pageIndex: 1,
-        pageSize: 5,
+        pageSize: 10,
         postList: []
       }
     })
@@ -62,7 +62,6 @@ export default {
         j < this.columnList[this.active].postList[i].cover.length;
         j++
       ) {
-        console.log(this.columnList[this.active].postList[i].cover[j])
         if (
           this.columnList[this.active].postList[i].cover[j].url.indexOf(
             'http'
