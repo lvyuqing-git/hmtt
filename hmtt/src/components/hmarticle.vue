@@ -53,7 +53,7 @@
 
 <script>
 export default {
-  props: ['post'],
+  props: ['post']
 }
 </script>
 
@@ -69,8 +69,14 @@ export default {
       flex-direction: column;
       justify-content: space-between;
     }
-    img {
-      width: 150px;
+    .picture {
+    margin: 0 5px;
+      img {
+        width: 120/360 * 100vw;
+        height: 70/360 * 100vw;
+        object-fit: cover;
+        padding-right: 5px;
+      }
     }
   }
 }
@@ -114,7 +120,7 @@ export default {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-10%,-50%);
+      transform: translate(-10%, -50%);
       width: 0;
       height: 0;
       border: 20px solid transparent;

@@ -18,15 +18,18 @@
         <van-tab :title="item.name"
                  v-for="item in columnList"
                  :key="item.id">
-
-          <van-list v-model="loading"
-                    :finished="finished"
-                    finished-text="没有更多了"
-                    @load="onLoad">
-            <hmarticle v-for="(item,index) in columnList[active].postList"
-                       :key="index"
-                       :post='item'></hmarticle>
-          </van-list>
+          <van-pull-refresh v-model="columnList[active].isLoading"
+                            success-text="刷新成功"
+                            @refresh="onRefresh">
+            <van-list v-model="columnList[active].loading"
+                      :finished="columnList[active].finished"
+                      finished-text="没有更多了"
+                      @load="onLoad">
+              <hmarticle v-for="(item,index) in columnList[active].postList"
+                         :key="index"
+                         :post='item'></hmarticle>
+            </van-list>
+          </van-pull-refresh>
 
         </van-tab>
       </van-tabs>
@@ -57,7 +60,10 @@ export default {
         ...value,
         pageIndex: 1,
         pageSize: 5,
-        postList: []
+        postList: [],
+        loading: false,
+        finished: false,
+        isLoading: true
       }
     })
     this.init()
@@ -72,8 +78,8 @@ export default {
         pageSize: this.columnList[this.active].pageSize,
         category: this.columnList[this.active].id
       })
-      if(this.columnList[this.active].postList.length >= res2.data.total){
-          this.finished = true
+      if (this.columnList[this.active].postList.length >= res2.data.total) {
+        this.columnList[this.active].finished = true
       }
 
       this.columnList[this.active].postList = this.columnList[
@@ -103,7 +109,11 @@ export default {
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
       this.columnList[this.active].pageIndex += 1
       this.init()
-      this.loading = false
+      this.columnList[this.active].loading = false
+    },
+    onRefresh() {
+      this.init()
+      this.columnList[this.active].isLoading = false
     }
   }
 }
