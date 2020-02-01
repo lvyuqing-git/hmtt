@@ -11,3 +11,8 @@ export const getArticleList = (params)=>{
         params
     })
 }
+export const getArticleInfo=(id)=>{
+    return axios({
+        url : `/post/${id}`
+    })
+}

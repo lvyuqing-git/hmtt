@@ -29,6 +29,11 @@
                          :key="index"
                          :post='item'
                          @click="$router.push({path : `newsDetails/${item.id}`})"></hmarticle>
+              <!-- <router-link :to="`/newsDetails/${item.id}`" v-for="(item,index) in columnList[active].postList"
+                           :key="index">
+                <hmarticle 
+                           :post='item'></hmarticle>
+              </router-link> -->
             </van-list>
           </van-pull-refresh>
 
@@ -115,8 +120,7 @@ export default {
     onRefresh() {
       this.init()
       this.columnList[this.active].isLoading = false
-    },
-    
+    }
   }
 }
 </script>
