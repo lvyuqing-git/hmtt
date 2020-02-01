@@ -7,7 +7,7 @@
       <div class="search">
         搜索
       </div>
-      <div class="user">
+      <div class="user" @click="$router.push({name : 'Personal'})">
         <van-icon name="contact" />
       </div>
     </div>
@@ -29,11 +29,6 @@
                          :key="index"
                          :post='item'
                          @click="$router.push({path : `newsDetails/${item.id}`})"></hmarticle>
-              <!-- <router-link :to="`/newsDetails/${item.id}`" v-for="(item,index) in columnList[active].postList"
-                           :key="index">
-                <hmarticle 
-                           :post='item'></hmarticle>
-              </router-link> -->
             </van-list>
           </van-pull-refresh>
 

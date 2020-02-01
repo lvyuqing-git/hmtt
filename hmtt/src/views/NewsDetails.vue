@@ -6,7 +6,12 @@
                   @click="$router.back()" />
         <span class="iconfont iconnew new"></span>
       </div>
-      <div class="right">已关注</div>
+      <div class="right"
+           @click="follows"
+           v-if="data.has_follow == true">已关注</div>
+      <div class="right"
+           @click="follows"
+           v-if="data.has_follow == false">关注</div>
     </div>
     <div class="title"
          v-html="data.title">
@@ -15,11 +20,14 @@
       <p><span></span><i>{{data.create_date | dateFormat}}</i></p>
     </div>
     <div class="conten"
-         v-html="data.content" v-if="data.type == 1">
-      
+         v-html="data.content"
+         v-if="data.type == 1">
+
     </div>
-    <div class="conten" v-if="data.type == 2" >
-     <video :src="data.content" controls></video>
+    <div class="conten"
+         v-if="data.type == 2">
+      <video :src="data.content"
+             controls></video>
     </div>
     <div class="footer">
       <span>112</span><span>微信</span>
@@ -30,6 +38,7 @@
 <script>
 import { getArticleInfo } from '../apis/article'
 import { dateFormat } from '../utils/myfilters'
+import { user_follows, user_unfollow } from '../apis/apiUser'
 export default {
   data() {
     return {
@@ -43,6 +52,22 @@ export default {
     let res = await getArticleInfo(this.$route.params.id)
     this.data = res.data.data
     console.log(this.data)
+  },
+  methods: {
+    async follows() {
+      if (localStorage.getItem('token')) {
+        let res
+        if (this.data.has_follow) {
+          res = await user_unfollow(this.data.user.id)
+        } else {
+          res = await user_follows(this.data.user.id)
+        }
+        this.data.has_follow = !this.data.has_follow
+        console.log(res)
+      } else {
+        this.$router.push({ name: 'Login' })
+      }
+    }
   }
 }
 </script>
@@ -108,7 +133,7 @@ export default {
     display: block;
   }
 }
-video{
-    width: 100%;
+video {
+  width: 100%;
 }
 </style>
