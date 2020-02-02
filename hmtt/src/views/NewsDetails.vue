@@ -32,7 +32,7 @@
     <div class="footer">
       <span>112</span><span>微信</span>
     </div>
-    <commentFooter></commentFooter>
+    <commentFooter :article='data'></commentFooter>
   </div>
 </template>
 
@@ -56,7 +56,6 @@ export default {
   async mounted() {
     let res = await getArticleInfo(this.$route.params.id)
     this.data = res.data.data
-    console.log(this.data)
   },
   methods: {
     async follows() {

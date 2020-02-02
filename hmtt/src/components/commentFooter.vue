@@ -1,10 +1,11 @@
 <template>
   <div class="addcomment"
-       v-if="isShow"
-      >
+       v-if="isShow">
     <input type="text"
-           placeholder="写跟帖"  @click="isShow=!isShow">
-    <span class="comment">
+           placeholder="写跟帖"
+           @click="isShow=!isShow">
+    <span class="comment"
+          @click="$router.push({path : `/goodComments/${article.id}`})">
       <i class="iconfont iconpinglun-"></i>
       <em>1111</em>
     </span>
@@ -27,6 +28,7 @@
 
 <script>
 export default {
+  props: ['article'],
   data() {
     return {
       isShow: true
@@ -48,6 +50,7 @@ export default {
     border-radius: 20px;
     border: none;
     text-indent: 1em;
+    flex: 4;
   }
   i {
     font-size: 20px;
@@ -83,12 +86,12 @@ export default {
     background-color: #d7d7d7;
   }
   .btn {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     button {
-      width: 60px;
-      height: 25px;
+      width: 60/360*100vw;
+      height: 25/360*100vw;
       font-size: 14px;
       background: red;
       color: #fff;

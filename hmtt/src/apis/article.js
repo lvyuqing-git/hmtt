@@ -16,3 +16,9 @@ export const getArticleInfo=(id)=>{
         url : `/post/${id}`
     })
 }
+//获取文章评论列表
+export const post_comment = (id)=>{
+    return axios({
+        url :`/post_comment/${id}`,
+    })
+}

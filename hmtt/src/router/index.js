@@ -6,6 +6,7 @@ import Personal from '../views/Personal.vue'
 import Edit_profile from '../views/Edit_profile'
 import Index from '../views/Index'
 import NewsDetails from '../views/NewsDetails'
+import GoodComments from '../views/GoodComment'
 Vue.use(VueRouter)
 
 let router = new VueRouter({
@@ -39,6 +40,11 @@ let router = new VueRouter({
             name : 'NewsDetails',
             path : '/newsDetails/:id',
             component : NewsDetails
+        },
+        {
+            name : 'GoodComments',
+            path : '/goodComments/:id',
+            component : GoodComments
         }
 	]
 })

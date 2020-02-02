@@ -1,65 +1,65 @@
 <template>
- <div @click="onClick">
-      <div class="article"
-       v-if="post.type==1 && post.cover.length == 1">
-    <div class="danArticle">
-      <div class="conten">{{post.title}}
+  <div @click="onClick">
+    <div class="article"
+         v-if="post.type==1 && post.cover.length == 1">
+      <div class="danArticle">
+        <div class="conten">{{post.title}}
+          <div class="base">
+            <span>火星时报<i>52跟贴</i></span>
+          </div>
+        </div>
+        <div class="picture">
+          <img :src="item.url"
+               v-for="item in post.cover"
+               :key="item.id">
+        </div>
+      </div>
+    </div>
+    <div class="article"
+         v-else-if="post.type==1 && post.cover.length > 1">
+      <div class="danArticle2">
+        <div>
+          {{post.title}}
+        </div>
+        <div class="imgs">
+          <img :src="item.url"
+               v-for="item in post.cover"
+               :key="item.id">
+        </div>
         <div class="base">
           <span>火星时报<i>52跟贴</i></span>
         </div>
       </div>
-      <div class="picture">
-        <img :src="item.url"
-             v-for="item in post.cover"
-             :key="item.id">
-      </div>
     </div>
-  </div>
-  <div class="article"
-       v-else-if="post.type==1 && post.cover.length > 1">
-    <div class="danArticle2">
-      <div>
-        {{post.title}}
-      </div>
-      <div class="imgs">
-        <img :src="item.url"
-             v-for="item in post.cover"
-             :key="item.id">
-      </div>
-      <div class="base">
-        <span>火星时报<i>52跟贴</i></span>
-      </div>
-    </div>
-  </div>
-  <div class="article"
-       v-else-if="post.type==2">
-    <div class="danArticle3">
-      <div>
-        {{post.title}}
-      </div>
-      <div class="video">
-        <img :src="post.cover[0].url">
-        <div class="play">
-          <div class="triangle">
+    <div class="article"
+         v-else-if="post.type==2">
+      <div class="danArticle3">
+        <div>
+          {{post.title}}
+        </div>
+        <div class="video">
+          <img :src="post.cover[0].url">
+          <div class="play">
+            <div class="triangle">
 
+            </div>
           </div>
         </div>
-      </div>
-      <div class="base">
-        <span>火星时报<i>52跟贴</i></span>
+        <div class="base">
+          <span>火星时报<i>52跟贴</i></span>
+        </div>
       </div>
     </div>
   </div>
- </div>
 </template>
 
 <script>
 export default {
   props: ['post'],
   methods: {
-      onClick(event){
-          this.$emit('click',event)
-      }
+    onClick(event) {
+      this.$emit('click', event)
+    }
   }
 }
 </script>
@@ -77,12 +77,11 @@ export default {
       justify-content: space-between;
     }
     .picture {
-    margin: 0 5px;
+      margin: 0 5px;
       img {
         width: 120/360 * 100vw;
         height: 70/360 * 100vw;
         object-fit: cover;
-        padding-right: 5px;
       }
     }
   }
@@ -92,8 +91,9 @@ export default {
     margin: 10px 0;
     img {
       width: 32%;
-      height: 68px;
+      height: 68/360 * 100vw;
       margin: 0 2px;
+      object-fit: cover;
     }
   }
 }
