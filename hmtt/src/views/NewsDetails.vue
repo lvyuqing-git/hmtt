@@ -32,6 +32,7 @@
     <div class="footer">
       <span>112</span><span>微信</span>
     </div>
+    <commentFooter></commentFooter>
   </div>
 </template>
 
@@ -39,11 +40,15 @@
 import { getArticleInfo } from '../apis/article'
 import { dateFormat } from '../utils/myfilters'
 import { user_follows, user_unfollow } from '../apis/apiUser'
+import commentFooter from '../components/commentFooter'
 export default {
   data() {
     return {
       data: {}
     }
+  },
+  components: {
+    commentFooter  
   },
   filters: {
     dateFormat
@@ -135,5 +140,9 @@ export default {
 }
 video {
   width: 100%;
+}
+.followUp {
+  display: flex;
+  justify-content: space-around;
 }
 </style>
