@@ -16,6 +16,7 @@
         </div>
       </div>
       <div class="content">{{item.content}}</div>
+      <hmcomment v-if="item.parent" :parent='item.parent'></hmcomment>
     </div>
   </div>
 </template>
@@ -24,9 +25,10 @@
 import hmheader from '../components/hmheader'
 import { post_comment } from '../apis/article'
 import { dateFormat } from '../utils/myfilters'
+import hmcomment from '../components/hmcomment'
 export default {
   components: {
-    hmheader
+    hmheader,hmcomment
   },
   filters: {
     dateFormat
